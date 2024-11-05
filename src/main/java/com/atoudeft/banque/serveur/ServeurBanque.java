@@ -84,6 +84,16 @@ public class ServeurBanque extends Serveur {
      * du TP).
      */
     public void supprimeInactifs() {
-        //À définir :
+        // crée une copie de connectes
+        List<ConnexionBanque> connexionsActives = new ArrayList<>(connectes);
+
+        // pour chaque connexion je vérifie si elle est inactive et si oui je la ferme
+        for (ConnexionBanque connexion : connexionsActives) {
+            if (connexion.estInactifDepuis(DELAI_INACTIVITE)) {
+                connexion.envoyer("END");
+                connexion.close();
+                connectes.remove(connexion);
+            }
+        }
     }
 }
