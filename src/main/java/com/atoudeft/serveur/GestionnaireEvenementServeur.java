@@ -56,7 +56,38 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                 case "LIST": //Envoie la liste des numéros de comptes-clients connectés :
                     cnx.envoyer("LIST " + serveurBanque.list());
                     break;
-                /******************* COMMANDES DE GESTION DE COMPTES *******************/
+
+                case "CONNECT":
+                    argument = evenement.getArgument();
+                    t = argument.split(":");
+                    if(t.length<2){
+                        cnx.envoyer("CONNECT NO");
+                    }else{
+                        String numeroCompteClient = t[0];
+                        String nip = t[1];
+
+                        for(ConnexionBanque connexion : connectes){
+                            if(connexion.getNumeroCompteClient().equals(numeroCompteClient)){
+                                cnx.envoyer("CONNECT NO");
+                                break;
+                            }
+                        }
+
+                        CompteClient compteClient = banque.getCompteClient(numeroCompteClient);
+                        if(compteClient != null && compteClient.getNip().equals(nip)){
+
+                            cnx.setNumeroCompteClient(numeroCompteClient);
+                            cnx.setNumeroCompteActuel(banque.getNumeroCompteParDefaut(numeroCompteClient));
+                            cnx.envoyer("CONNCET OK");
+                        }else{
+                            cnx.envoyer("CONNECT NO");
+                            break;
+                        }
+
+                    }
+
+                    break;
+                    /******************* COMMANDES DE GESTION DE COMPTES *******************/
                 case "NOUVEAU": //Crée un nouveau compte-client :
                     if (cnx.getNumeroCompteClient()!=null) {
                         cnx.envoyer("NOUVEAU NO deja connecte");
@@ -80,6 +111,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             cnx.envoyer("NOUVEAU NO "+t[0]+" existe");
                     }
                     break;
+
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
                 default: //Renvoyer le texte recu convertit en majuscules :
                     msg = (evenement.getType() + " " + evenement.getArgument()).toUpperCase();
