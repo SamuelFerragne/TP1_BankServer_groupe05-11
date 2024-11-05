@@ -1,6 +1,5 @@
 package com.atoudeft.banque;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;
@@ -119,9 +118,6 @@ public class Banque implements Serializable {
      * @return numéro du compte-chèque du client ayant le numéro de compte-client
      */
     public String getNumeroCompteParDefaut(String numCompteClient) {
-
-
-        //À compléter : retourner le numéro du compte-chèque du compte-client.
-        return null; //À modifier
+        return this.getCompteClient(numCompteClient).getComptesBancaire().get(0).getNumero();
     }
 }

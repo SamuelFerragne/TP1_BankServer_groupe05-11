@@ -30,4 +30,8 @@ public class CompteClient implements Serializable {
     public boolean ajouter(CompteBancaire compte) {
         return this.comptes.add(compte);
     }
+
+    public List<CompteBancaire> getComptesBancaire() {
+        return comptes;
+    }
 }
