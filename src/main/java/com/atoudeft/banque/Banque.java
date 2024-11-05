@@ -1,5 +1,6 @@
 package com.atoudeft.banque;
 
+import com.sun.xml.internal.ws.util.StringUtils;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;
@@ -94,20 +95,21 @@ public class Banque implements Serializable {
      * @return true si le compte a été créé correctement
      */
     public boolean ajouter(String numCompteClient, String nip) {
-        /*À compléter et modifier :
-            - Vérifier que le numéro a entre 6 et 8 caractères et ne contient que des lettres majuscules et des chiffres.
-              Sinon, retourner false.
-            - Vérifier que le nip a entre 4 et 5 caractères et ne contient que des chiffres. Sinon,
-              retourner false.
-            - Vérifier s'il y a déjà un compte-client avec le numéro, retourner false.
-            - Sinon :
-                . Créer un compte-client avec le numéro et le nip;
-                . Générer (avec CompteBancaire.genereNouveauNumero()) un nouveau numéro de compte bancaire qui n'est
-                  pas déjà utilisé;
-                . Créer un compte-chèque avec ce numéro et l'ajouter au compte-client;
-                . Ajouter le compte-client à la liste des comptes et retourner true.
-         */
-        return this.comptes.add(new CompteClient(numCompteClient,nip)); //À modifier
+        if(!numCompteClient.matches("^[A-Z0-9]{6,8}$") || !nip.matches("^[0-9]{4,5}$")) {
+            return false;
+        }
+        if(getCompteClient(numCompteClient) != null) {
+            return false;
+        }
+
+        CompteClient compteClient = new CompteClient(numCompteClient, nip);
+
+        String numCompteBancaire = CompteBancaire.genereNouveauNumero();
+        CompteCheque compteCheque = new CompteCheque(numCompteBancaire);
+
+        compteClient.ajouter(compteCheque);
+
+        return this.comptes.add(compteClient);
     }
 
     /**
@@ -117,6 +119,8 @@ public class Banque implements Serializable {
      * @return numéro du compte-chèque du client ayant le numéro de compte-client
      */
     public String getNumeroCompteParDefaut(String numCompteClient) {
+
+
         //À compléter : retourner le numéro du compte-chèque du compte-client.
         return null; //À modifier
     }
