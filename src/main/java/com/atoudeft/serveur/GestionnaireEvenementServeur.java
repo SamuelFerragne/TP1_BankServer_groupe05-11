@@ -136,6 +136,25 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     banque.getCompteClient(cnx.getNumeroCompteClient()).ajouter(compteEpargne);
                     break;
 
+                case "DEPOT" :
+                    argument = evenement.getArgument();
+                    int depot = 0;
+
+                    try {
+                        depot = Integer.parseInt(argument);
+                    }catch (Exception ex){
+                        cnx.envoyer("DEPOT NO");
+                        break;
+                    }
+
+                    if(depot <= 0) {
+                        cnx.envoyer("DEPOT NO");
+                        break;
+                    }else{
+                        banque.deposer(depot, cnx.getNumeroCompteActuel());
+                    }
+                    break;
+
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
                 default: //Renvoyer le texte recu convertit en majuscules :
                     msg = (evenement.getType() + " " + evenement.getArgument()).toUpperCase();
