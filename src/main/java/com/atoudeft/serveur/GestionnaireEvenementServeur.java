@@ -111,6 +111,58 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             cnx.envoyer("NOUVEAU NO "+t[0]+" existe");
                     }
                     break;
+                case "SELECT":
+                    
+                    if(cnx.getNumeroCompteClient() == null){
+                        cnx.envoyer("SELECT NO");
+                    }else{
+                        string numeroCompte;
+                        string typeCompte = evenement.getArgument().toLowerCase();
+                            
+                        if(typeCompte.equals("cheque")){
+                            numeroCompte = banque.getNumeroCompteParDefaut(cnx.getNumeroCompteClient());
+
+                            //s'assure qu'il y a un com^te chèque lié
+                            if (numeroCompte != null) {
+                                cnx.setNumeroCompteSelectionne(numeroCompte);
+                                cnx.envoyer("SELECT OK");
+                            } else {
+                                cnx.envoyer("SELECT NO");
+                            }
+                        }else if(typeCompte.equals("epargne")){
+
+                            //cherche le compte client dans la banque
+                            CompteClient compteClient = null;
+                            for(CompteClient compte : banque.getCompteClient()){
+                                if(compte.getNumeroCompteClient() == compteClient.getNumeroCompteClient()){
+                                    numeroCompte = compteClient.getNumeroCompteEpargne();
+                                    break;
+                                }
+                            }
+
+                            if(compteClient != null){
+                                for(CompteBancaire compte : compteClient.getComptesBancaire()){
+                                    if(compte instanceof CompteEpargne){
+                                        numeroCompte = compte.getNumeroCompte();
+                                        break;
+                                    }
+                                }
+
+                                if(numeroCompte != null){
+                                    cnx.setNumeroCompteSelectionne(numeroCompte);
+                                    cnx.envoyer("SELECT OK");
+                                }else{
+                                    cnx.envoyer("SELECT NO")
+                                }
+                            }else{
+                                cnx.envoyer("SELECT NO");
+                            }
+                            
+                        }else{
+                            cnx.envoyer("SELECT NO");
+                        }
+                    }
+                    break;
 
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
                 default: //Renvoyer le texte recu convertit en majuscules :
