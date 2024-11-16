@@ -181,11 +181,12 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     double montantFacture = 0;
 
                     t = argument.split(" ");
-                    String numeroFacture = t[1];
-                    String description = t[2];
-                    if (t.length<3) {
+
+                    if (t.length != 3) {
                         cnx.envoyer("FACTURE NO");
                     }else {
+                        String numeroFacture = t[1];
+                        String description = t[2];
                         try {
                             montantFacture = Double.parseDouble(t[0]);
                         }catch (Exception ex){
@@ -204,7 +205,32 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     }
                     break;
 
+                case "TRANSFER" :
+                    argument = evenement.getArgument();
+                    double transfer = 0;
 
+                    t = argument.split(" ");
+                    if (t.length != 2) {
+                        cnx.envoyer("TRANSFER NO");
+                    }else {
+                        String compteTransfer = t[1];
+                        try {
+                            transfer = Double.parseDouble(t[0]);
+                        }catch (Exception ex){
+                            cnx.envoyer("TRANSFER NO");
+                            break;
+                        }
+
+                        if(transfer <= 0) {
+                            cnx.envoyer("TRANSFER NO");
+                            break;
+                        }else{
+                            banque.transferer(transfer, cnx.getNumeroCompteActuel(), compteTransfer);
+                            cnx.envoyer("TRANSFER OK");
+                        }
+
+                    }
+                    break;
 
 
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
