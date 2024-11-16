@@ -138,10 +138,10 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
                 case "DEPOT" :
                     argument = evenement.getArgument();
-                    int depot = 0;
+                    double depot = 0;
 
                     try {
-                        depot = Integer.parseInt(argument);
+                        depot = Double.parseDouble(argument);
                     }catch (Exception ex){
                         cnx.envoyer("DEPOT NO");
                         break;
@@ -152,8 +152,60 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         break;
                     }else{
                         banque.deposer(depot, cnx.getNumeroCompteActuel());
+                        cnx.envoyer("DEPOT OK");
                     }
                     break;
+
+                case "RETRAIT" :
+                    argument = evenement.getArgument();
+                    double retrait = 0;
+
+                    try {
+                        retrait = Double.parseDouble(argument);
+                    }catch (Exception ex){
+                        cnx.envoyer("RETRAIT NO");
+                        break;
+                    }
+
+                    if(retrait <= 0) {
+                        cnx.envoyer("RETRAIT NO");
+                        break;
+                    }else{
+                        banque.retirer(retrait, cnx.getNumeroCompteActuel());
+                        cnx.envoyer("RETRAIT OK");
+                    }
+                    break;
+
+                case "FACTURE" :
+                    argument = evenement.getArgument();
+                    double montantFacture = 0;
+
+                    t = argument.split(" ");
+                    String numeroFacture = t[1];
+                    String description = t[2];
+                    if (t.length<3) {
+                        cnx.envoyer("FACTURE NO");
+                    }else {
+                        try {
+                            montantFacture = Double.parseDouble(t[0]);
+                        }catch (Exception ex){
+                            cnx.envoyer("FACTURE NO");
+                            break;
+                        }
+
+                        if(montantFacture <= 0) {
+                            cnx.envoyer("FACTURE NO");
+                            break;
+                        }else{
+                            banque.payerFacture(montantFacture, cnx.getNumeroCompteActuel(), numeroFacture, description);
+                            cnx.envoyer("FACTURE OK");
+                        }
+
+                    }
+                    break;
+
+
+
 
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
                 default: //Renvoyer le texte recu convertit en majuscules :
