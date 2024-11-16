@@ -1,6 +1,9 @@
 package com.atoudeft.serveur;
 
 import com.atoudeft.banque.Banque;
+import com.atoudeft.banque.CompteBancaire;
+import com.atoudeft.banque.CompteClient;
+import com.atoudeft.banque.CompteEpargne;
 import com.atoudeft.banque.serveur.ConnexionBanque;
 import com.atoudeft.banque.serveur.ServeurBanque;
 import com.atoudeft.commun.evenement.Evenement;
@@ -36,7 +39,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
     public void traiter(Evenement evenement) {
         Object source = evenement.getSource();
         ServeurBanque serveurBanque = (ServeurBanque)serveur;
-        Banque banque;
+        Banque banque = serveurBanque.getBanque();
         ConnexionBanque cnx;
         String msg, typeEvenement, argument, numCompteClient, nip;
         String[] t;
@@ -64,7 +67,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         cnx.envoyer("CONNECT NO");
                     }else{
                         String numeroCompteClient = t[0];
-                        String nip = t[1];
+                        nip = t[1];
 
                         String connectesString = serveurBanque.list(); //récupère la liste des connexions
                         String[] connectes = connectesString.split(":");
@@ -113,6 +116,27 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         else
                             cnx.envoyer("NOUVEAU NO "+t[0]+" existe");
                     }
+                    break;
+
+                case "EPARGNE" :
+                    if (cnx.getNumeroCompteClient()==null) {
+                        cnx.envoyer("EPARGNE NO pas connecter");
+                        break;
+                    }
+
+                    banque = serveurBanque.getBanque();
+                    if(banque.getNumeroCompteEpargne(cnx.getNumeroCompteClient()) != null){
+                        cnx.envoyer("EPARGNE NO compte epargne deja existant");
+                        break;
+                    }
+
+                    String numeroTemp = CompteBancaire.genereNouveauNumero();
+                    while(banque.getCompteClient(numeroTemp) != null) {
+                        numeroTemp = CompteBancaire.genereNouveauNumero();
+                    }
+
+                    CompteEpargne compteEpargne = new CompteEpargne(numeroTemp, 5);
+                    banque.getCompteClient(cnx.getNumeroCompteClient()).ajouter(compteEpargne);
                     break;
 
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
