@@ -67,7 +67,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         cnx.envoyer("CONNECT NO");
                     }else{
                         String numeroCompteClient = t[0];
-                        String nip = t[1];
+                        nip = t[1];
 
                         for(ConnexionBanque connexion : connectes){
                             if(connexion.getNumeroCompteClient().equals(numeroCompteClient)){
