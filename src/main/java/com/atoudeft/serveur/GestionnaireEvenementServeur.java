@@ -136,6 +136,103 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     banque.getCompteClient(cnx.getNumeroCompteClient()).ajouter(compteEpargne);
                     break;
 
+                case "DEPOT" :
+                    argument = evenement.getArgument();
+                    double depot = 0;
+
+                    try {
+                        depot = Double.parseDouble(argument);
+                    }catch (Exception ex){
+                        cnx.envoyer("DEPOT NO");
+                        break;
+                    }
+
+                    if(depot <= 0) {
+                        cnx.envoyer("DEPOT NO");
+                        break;
+                    }else{
+                        banque.deposer(depot, cnx.getNumeroCompteActuel());
+                        cnx.envoyer("DEPOT OK");
+                    }
+                    break;
+
+                case "RETRAIT" :
+                    argument = evenement.getArgument();
+                    double retrait = 0;
+
+                    try {
+                        retrait = Double.parseDouble(argument);
+                    }catch (Exception ex){
+                        cnx.envoyer("RETRAIT NO");
+                        break;
+                    }
+
+                    if(retrait <= 0) {
+                        cnx.envoyer("RETRAIT NO");
+                        break;
+                    }else{
+                        banque.retirer(retrait, cnx.getNumeroCompteActuel());
+                        cnx.envoyer("RETRAIT OK");
+                    }
+                    break;
+
+                case "FACTURE" :
+                    argument = evenement.getArgument();
+                    double montantFacture = 0;
+
+                    t = argument.split(" ");
+
+                    if (t.length != 3) {
+                        cnx.envoyer("FACTURE NO");
+                    }else {
+                        String numeroFacture = t[1];
+                        String description = t[2];
+                        try {
+                            montantFacture = Double.parseDouble(t[0]);
+                        }catch (Exception ex){
+                            cnx.envoyer("FACTURE NO");
+                            break;
+                        }
+
+                        if(montantFacture <= 0) {
+                            cnx.envoyer("FACTURE NO");
+                            break;
+                        }else{
+                            banque.payerFacture(montantFacture, cnx.getNumeroCompteActuel(), numeroFacture, description);
+                            cnx.envoyer("FACTURE OK");
+                        }
+
+                    }
+                    break;
+
+                case "TRANSFER" :
+                    argument = evenement.getArgument();
+                    double transfer = 0;
+
+                    t = argument.split(" ");
+                    if (t.length != 2) {
+                        cnx.envoyer("TRANSFER NO");
+                    }else {
+                        String compteTransfer = t[1];
+                        try {
+                            transfer = Double.parseDouble(t[0]);
+                        }catch (Exception ex){
+                            cnx.envoyer("TRANSFER NO");
+                            break;
+                        }
+
+                        if(transfer <= 0) {
+                            cnx.envoyer("TRANSFER NO");
+                            break;
+                        }else{
+                            banque.transferer(transfer, cnx.getNumeroCompteActuel(), compteTransfer);
+                            cnx.envoyer("TRANSFER OK");
+                        }
+
+                    }
+                    break;
+
+
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
                 default: //Renvoyer le texte recu convertit en majuscules :
                     msg = (evenement.getType() + " " + evenement.getArgument()).toUpperCase();
