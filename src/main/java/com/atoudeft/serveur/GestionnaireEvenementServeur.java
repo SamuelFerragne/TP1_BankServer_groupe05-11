@@ -44,9 +44,9 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
         String[] t;
 
         if (source instanceof Connexion) {
-            String cnx = (ConnexionBanque) source;
+            cnx = (ConnexionBanque) source;
             System.out.println("SERVEUR: Recu : " + evenement.getType() + " " + evenement.getArgument());
-            String typeEvenement = evenement.getType();
+            typeEvenement = evenement.getType();
             cnx.setTempsDerniereOperation(System.currentTimeMillis());
             switch (typeEvenement) {
                 /******************* COMMANDES GÉNÉRALES *******************/
@@ -60,19 +60,19 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     break;
 
                 case "CONNECT":
-                    String argument = evenement.getArgument();
-                    String[] t = argument.split(":");
+                    argument = evenement.getArgument();
+                    t = argument.split(":");
                     if(t.length<2){
                         cnx.envoyer("CONNECT NO");
                     }else{
                         String numeroCompteClient = t[0];
-                        String nip = t[1];
+                        nip = t[1];
 
                         String connectesString = serveurBanque.list(); //récupère la liste des connexions
                         String[] connectes = connectesString.split(":");
 
-                        String connectesString = serveurBanque.list(); //récupère la liste des connexions
-                        String[] connectes = connectesString.split(":");
+                        connectesString = serveurBanque.list(); //récupère la liste des connexions
+                        connectes = connectesString.split(":");
 
                         for(String connexion : connectes){
                             if(connexion.equals(numeroCompteClient)){
