@@ -1,3 +1,5 @@
+package com.atoudeft.banque;
+
 public class OperationTransfer extends Operation {
     public String numCompteDestinataire;
 

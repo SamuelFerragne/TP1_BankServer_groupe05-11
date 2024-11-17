@@ -1,14 +1,14 @@
 package com.atoudeft.serveur;
 
-import com.atoudeft.banque.Banque;
-import com.atoudeft.banque.CompteBancaire;
-import com.atoudeft.banque.CompteClient;
-import com.atoudeft.banque.CompteEpargne;
+import com.atoudeft.banque.*;
 import com.atoudeft.banque.serveur.ConnexionBanque;
 import com.atoudeft.banque.serveur.ServeurBanque;
 import com.atoudeft.commun.evenement.Evenement;
 import com.atoudeft.commun.evenement.GestionnaireEvenement;
 import com.atoudeft.commun.net.Connexion;
+import jdk.dynalink.Operation;
+
+import java.util.List;
 
 /**
  * Cette classe représente un gestionnaire d'événement d'un serveur. Lorsqu'un serveur reçoit un texte d'un client,
@@ -69,15 +69,18 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         String numeroCompteClient = t[0];
                         nip = t[1];
 
-                        for(ConnexionBanque connexion : connectes){
-                            if(connexion.getNumeroCompteClient().equals(numeroCompteClient)){
+                        String connectesString = serveurBanque.list(); //récupère la liste des connexions
+                        String[] connectes = connectesString.split(":");
+
+                        for(String connexion : connectes){
+                            if(connexion.equals(numeroCompteClient)){
                                 cnx.envoyer("CONNECT NO");
                                 break;
                             }
                         }
 
                         CompteClient compteClient = banque.getCompteClient(numeroCompteClient);
-                        if(compteClient != null && compteClient.getNip().equals(nip)){
+                        if(compteClient != null && compteClient.nip.equals(nip)){
 
                             cnx.setNumeroCompteClient(numeroCompteClient);
                             cnx.setNumeroCompteActuel(banque.getNumeroCompteParDefaut(numeroCompteClient));
@@ -88,8 +91,6 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         }
 
                     }
-
-                    break;
                     /******************* COMMANDES DE GESTION DE COMPTES *******************/
                 case "NOUVEAU": //Crée un nouveau compte-client :
                     if (cnx.getNumeroCompteClient()!=null) {
@@ -151,6 +152,17 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         cnx.envoyer("DEPOT NO");
                         break;
                     }else{
+                        CompteClient compteClientDepot = serveurBanque.getBanque().getCompteClient(cnx.getNumeroCompteActuel());
+                        CompteBancaire compte = null;
+                        for(CompteBancaire compteB : compteClientDepot.getComptesBancaire()){
+                            if(compteB.getNumero().equals(cnx.getNumeroCompteActuel())){
+                                compte = compteB;
+                                break;
+                            }
+                        }
+                        OperationDepot operationDepot = new OperationDepot(depot);
+                        assert compte != null;
+                        compte.ajouterOperation((Operation) operationDepot);
                         banque.deposer(depot, cnx.getNumeroCompteActuel());
                         cnx.envoyer("DEPOT OK");
                     }
@@ -171,6 +183,17 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         cnx.envoyer("RETRAIT NO");
                         break;
                     }else{
+                        CompteClient compteClientRetrait = serveurBanque.getBanque().getCompteClient(cnx.getNumeroCompteActuel());
+                        CompteBancaire compte = null;
+                        for(CompteBancaire compteB : compteClientRetrait.getComptesBancaire()){
+                            if(compteB.getNumero().equals(cnx.getNumeroCompteActuel())){
+                                compte = compteB;
+                                break;
+                            }
+                        }
+                        OperationRetrait operationRetrait = new OperationRetrait(retrait);
+                        assert compte != null;
+                        compte.ajouterOperation((Operation) operationRetrait);
                         banque.retirer(retrait, cnx.getNumeroCompteActuel());
                         cnx.envoyer("RETRAIT OK");
                     }
@@ -198,6 +221,17 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             cnx.envoyer("FACTURE NO");
                             break;
                         }else{
+                            CompteClient compteClientFacture = serveurBanque.getBanque().getCompteClient(cnx.getNumeroCompteActuel());
+                            CompteBancaire compte = null;
+                            for(CompteBancaire compteB : compteClientFacture.getComptesBancaire()){
+                                if(compteB.getNumero().equals(cnx.getNumeroCompteActuel())){
+                                    compte = compteB;
+                                    break;
+                                }
+                            }
+                            OperationFacture operationFacture = new OperationFacture(montantFacture,numeroFacture,description);
+                            assert compte != null;
+                            compte.ajouterOperation((Operation) operationFacture);
                             banque.payerFacture(montantFacture, cnx.getNumeroCompteActuel(), numeroFacture, description);
                             cnx.envoyer("FACTURE OK");
                         }
@@ -225,28 +259,47 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             cnx.envoyer("TRANSFER NO");
                             break;
                         }else{
+                            CompteClient compteClientTransfer = serveurBanque.getBanque().getCompteClient(cnx.getNumeroCompteActuel());
+                            CompteBancaire compte = null;
+                            for(CompteBancaire compteB : compteClientTransfer.getComptesBancaire()){
+                                if(compteB.getNumero().equals(cnx.getNumeroCompteActuel())){
+                                    compte = compteB;
+                                    break;
+                                }
+                            }
+                            OperationTransfer operationTransfer = new OperationTransfer(transfer, compteTransfer);
+                            assert compte != null;
+                            compte.ajouterOperation((Operation) operationTransfer);
                             banque.transferer(transfer, cnx.getNumeroCompteActuel(), compteTransfer);
                             cnx.envoyer("TRANSFER OK");
                         }
 
                     }
                     break;
-                case: "HIST":
-                    if (cnx.getNumeroCompte.Selectionne() == null){
+                case "HIST":
+                    if (cnx.getNumeroCompteActuel() == null){
                         cnx.envoyer("HIST NO");
                         break;
                     }
-
-                    CompteBancaire compte = banque.getCompte(cnx.getNumeroCompteSelectionne());
-                    if(compte != null){
-                        StringBuilder historiqueString = new StringBuilder("HIST\n");
-
-                        List<Operation> historique = compte.getHistorique().parcourir();
-                        for(Operation operation : historique){
-                            historiqueString.append(operation.toString()).append("\n");
+                    CompteClient compteClientHistorique = serveurBanque.getBanque().getCompteClient(cnx.getNumeroCompteActuel());
+                    if(compteClientHistorique != null){
+                        CompteBancaire compte = null;
+                        for(CompteBancaire compteB : compteClientHistorique.getComptesBancaire()){
+                            if(compteB.getNumero().equals(cnx.getNumeroCompteActuel())){
+                                compte = compteB;
+                                break;
+                            }
                         }
 
-                        cnx.envoyer(historiqueString.toString());
+                        if(compte != null){
+                            StringBuilder historiqueString = new StringBuilder("HIST\n");
+                            for(Operation operation : compte.getHistorique().parcourir()){
+                                historiqueString.append(operation.toString()).append("\n");
+                            }
+                            cnx.envoyer(historiqueString.toString());
+                        }else{
+                            cnx.envoyer("HIST NO");
+                        }
                     }else{
                         cnx.envoyer("HIST NO");
                     }

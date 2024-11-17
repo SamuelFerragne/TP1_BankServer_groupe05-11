@@ -1,4 +1,8 @@
+package com.atoudeft.banque;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PileChainee<T> implements Serializable {
     private static final long serialVersionUID = 1L;

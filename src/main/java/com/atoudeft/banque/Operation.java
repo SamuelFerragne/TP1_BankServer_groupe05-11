@@ -1,4 +1,7 @@
+package com.atoudeft.banque;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class Operation implements Serializable{
     private static final long serialVersionUID = 1L;

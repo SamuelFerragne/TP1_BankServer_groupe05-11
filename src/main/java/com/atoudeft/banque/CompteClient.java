@@ -6,7 +6,7 @@ import java.util.List;
 
 public class CompteClient implements Serializable {
     private String numero;
-    private String nip;
+    public String nip;
     private List<CompteBancaire> comptes;
 
     /**

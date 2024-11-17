@@ -1,3 +1,5 @@
+package com.atoudeft.banque;
+
 public class OperationFacture extends Operation {
     public String numFacture;
     public String descritpion;
