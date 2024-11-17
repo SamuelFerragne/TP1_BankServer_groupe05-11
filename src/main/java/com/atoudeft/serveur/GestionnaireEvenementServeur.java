@@ -79,7 +79,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         }
 
                         CompteClient compteClient = banque.getCompteClient(numeroCompteClient);
-                        if(compteClient != null && compteClient.nip.equals(nip)){
+                        if(compteClient != null && compteClient.getNip().equals(nip)){
 
                             cnx.setNumeroCompteClient(numeroCompteClient);
                             cnx.setNumeroCompteActuel(banque.getNumeroCompteParDefaut(numeroCompteClient));
