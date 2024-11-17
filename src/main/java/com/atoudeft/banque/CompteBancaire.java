@@ -48,8 +48,21 @@ public abstract class CompteBancaire implements Serializable {
     public double getSolde() {
         return solde;
     }
-    public abstract boolean crediter(double montant);
-    public abstract boolean debiter(double montant);
-    public abstract boolean payerFacture(String numeroFacture, double montant, String description);
-    public abstract boolean transferer(double montant, String numeroCompteDestinataire);
+    public PileChainee<Operation> getHistorique(){ return historique; }
+    public abstract boolean crediter(double montant){
+        OperationDepot operationDepot = new OperationDepot(montant);
+        historique.empiler(operationDepot);
+    }
+    public abstract boolean debiter(double montant){
+        OperationRetrait operationRetrait = new OperationRetrait(montant);
+        historique.empiler(operationRetrait);
+    }
+    public abstract boolean payerFacture(String numeroFacture, double montant, String description){
+        OperationFacture operationFacture = new OperationFacture(montant, numeroFacture, description);
+        historique.empiler(operationFacture);
+    }
+    public abstract boolean transferer(double montant, String numeroCompteDestinataire){
+        OperationTransfer operationTransfer = new OperationTransfer(montant, destinataire.getNumeroCompte());
+        historique.empiler(operationTransfer);
+    }
 }
