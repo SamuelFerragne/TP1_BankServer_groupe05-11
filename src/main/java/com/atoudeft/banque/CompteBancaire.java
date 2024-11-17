@@ -1,7 +1,5 @@
 package com.atoudeft.banque;
 
-import jdk.dynalink.Operation;
-
 import java.io.Serializable;
 
 public abstract class CompteBancaire implements Serializable {
