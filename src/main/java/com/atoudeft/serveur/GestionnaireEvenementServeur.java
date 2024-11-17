@@ -241,9 +241,16 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                     if(compte != null){
                         StringBuilder historiqueString = new StringBuilder("HIST\n");
 
-                        PileChainee<Operation> historique = compte.getHistorique();
-                        while(!historique.estVide)
+                        List<Operation> historique = compte.getHistorique().parcourir();
+                        for(Operation operation : historique){
+                            historiqueString.append(operation.toString()).append("\n");
+                        }
+
+                        cnx.envoyer(historiqueString.toString());
+                    }else{
+                        cnx.envoyer("HIST NO");
                     }
+                    break;
 
 
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
