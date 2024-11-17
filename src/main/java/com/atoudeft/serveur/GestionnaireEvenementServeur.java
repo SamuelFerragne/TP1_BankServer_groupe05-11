@@ -231,6 +231,19 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
 
                     }
                     break;
+                case: "HIST":
+                    if (cnx.getNumeroCompte.Selectionne() == null){
+                        cnx.envoyer("HIST NO");
+                        break;
+                    }
+
+                    CompteBancaire compte = banque.getCompte(cnx.getNumeroCompteSelectionne());
+                    if(compte != null){
+                        StringBuilder historiqueString = new StringBuilder("HIST\n");
+
+                        PileChainee<Operation> historique = compte.getHistorique();
+                        while(!historique.estVide)
+                    }
 
 
                 /******************* TRAITEMENT PAR DÉFAUT *******************/

@@ -47,6 +47,18 @@ public class PileChainee<T> implements Serializable {
         return valeur;
     }
 
+    public List<T> parcourir(){
+        List<T> elements = new ArrayList<>();
+        Noeud<T> temp = sommet;
+
+        while(temp != null){
+            elements.add(temp.valeur);
+            temp = temp.suivant;
+        }
+
+        return elements;
+    }
+
     public boolean estVide(){
         return sommet==null;
     }
