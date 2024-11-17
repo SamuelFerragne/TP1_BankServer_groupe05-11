@@ -38,7 +38,12 @@ public class Banque implements Serializable {
      * @return  true si le compte-bancaire appartient au compte-client
      */
     public boolean appartientA(String numeroCompteBancaire, String numeroCompteClient) {
-        throw new NotImplementedException();
+        for(CompteBancaire cb : this.getCompteClient(numeroCompteClient).getComptesBancaire()){
+            if(cb.getNumero() == numeroCompteBancaire){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -49,7 +54,14 @@ public class Banque implements Serializable {
      * @return true si le dépot s'est effectué correctement
      */
     public boolean deposer(double montant, String numeroCompte) {
-        throw new NotImplementedException();
+        for(CompteClient compteClient : comptes) {
+            for(CompteBancaire cb : compteClient.getComptesBancaire()){
+                if(cb.getNumero() == numeroCompte){
+                    return cb.crediter(montant);
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -60,7 +72,14 @@ public class Banque implements Serializable {
      * @return true si le retrait s'est effectué correctement
      */
     public boolean retirer(double montant, String numeroCompte) {
-        throw new NotImplementedException();
+        for(CompteClient compteClient : comptes) {
+            for(CompteBancaire cb : compteClient.getComptesBancaire()){
+                if(cb.getNumero() == numeroCompte){
+                    return cb.debiter(montant);
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -71,7 +90,14 @@ public class Banque implements Serializable {
      * @return true si l'opération s'est déroulée correctement
      */
     public boolean transferer(double montant, String numeroCompteInitial, String numeroCompteFinal) {
-        throw new NotImplementedException();
+        for(CompteClient compteClient : comptes) {
+            for(CompteBancaire cb : compteClient.getComptesBancaire()){
+                if(cb.getNumero() == numeroCompteInitial){
+                    return cb.transferer(montant, numeroCompteFinal);
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -83,7 +109,14 @@ public class Banque implements Serializable {
      * @return true si le paiement s'est bien effectuée
      */
     public boolean payerFacture(double montant, String numeroCompte, String numeroFacture, String description) {
-        throw new NotImplementedException();
+        for(CompteClient compteClient : comptes) {
+            for(CompteBancaire cb : compteClient.getComptesBancaire()){
+                if(cb.getNumero() == numeroCompte){
+                    return cb.payerFacture(numeroFacture, montant, description);
+                }
+            }
+        }
+        return false;
     }
 
     /**
