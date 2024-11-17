@@ -35,4 +35,5 @@ public class CompteClient implements Serializable {
         return comptes;
     }
     public String getNip(){return nip;}
+    public String getNumero(){return numero;}
 }

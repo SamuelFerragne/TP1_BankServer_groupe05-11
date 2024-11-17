@@ -20,12 +20,20 @@ public class Banque implements Serializable {
      * @return le compte-client s'il a été trouvé. Sinon, retourne null
      */
     public CompteClient getCompteClient(String numeroCompteClient) {
+        /* NE FONCTIONNE PAS RETOURNE TOUJOURS NULL
         CompteClient cpt = new CompteClient(numeroCompteClient,"");
         int index = this.comptes.indexOf(cpt);
         if (index != -1)
             return this.comptes.get(index);
         else
             return null;
+         */
+        for(CompteClient compteClient : comptes) {
+            if(compteClient.getNumero() == numeroCompteClient) {
+                return compteClient;
+            }
+        }
+        return null;
     }
 
     /**

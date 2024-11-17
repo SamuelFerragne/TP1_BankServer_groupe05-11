@@ -154,7 +154,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         cnx.envoyer("DEPOT NO");
                         break;
                     }else{
-                        CompteClient compteClientDepot = serveurBanque.getBanque().getCompteClient(cnx.getNumeroCompteActuel());
+                        CompteClient compteClientDepot = banque.getCompteClient(cnx.getNumeroCompteClient());
                         CompteBancaire compte = null;
                         for(CompteBancaire compteB : compteClientDepot.getComptesBancaire()){
                             if(compteB.getNumero().equals(cnx.getNumeroCompteActuel())){
@@ -185,7 +185,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         cnx.envoyer("RETRAIT NO");
                         break;
                     }else{
-                        CompteClient compteClientRetrait = serveurBanque.getBanque().getCompteClient(cnx.getNumeroCompteActuel());
+                        CompteClient compteClientRetrait = banque.getCompteClient(cnx.getNumeroCompteClient());
                         CompteBancaire compte = null;
                         for(CompteBancaire compteB : compteClientRetrait.getComptesBancaire()){
                             if(compteB.getNumero().equals(cnx.getNumeroCompteActuel())){
@@ -223,7 +223,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             cnx.envoyer("FACTURE NO");
                             break;
                         }else{
-                            CompteClient compteClientFacture = serveurBanque.getBanque().getCompteClient(cnx.getNumeroCompteActuel());
+                            CompteClient compteClientFacture = banque.getCompteClient(cnx.getNumeroCompteClient());
                             CompteBancaire compte = null;
                             for(CompteBancaire compteB : compteClientFacture.getComptesBancaire()){
                                 if(compteB.getNumero().equals(cnx.getNumeroCompteActuel())){
@@ -261,7 +261,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                             cnx.envoyer("TRANSFER NO");
                             break;
                         }else{
-                            CompteClient compteClientTransfer = serveurBanque.getBanque().getCompteClient(cnx.getNumeroCompteActuel());
+                            CompteClient compteClientTransfer = banque.getCompteClient(cnx.getNumeroCompteClient());
                             CompteBancaire compte = null;
                             for(CompteBancaire compteB : compteClientTransfer.getComptesBancaire()){
                                 if(compteB.getNumero().equals(cnx.getNumeroCompteActuel())){
@@ -284,7 +284,7 @@ public class GestionnaireEvenementServeur implements GestionnaireEvenement {
                         cnx.envoyer("HIST NO");
                         break;
                     }
-                    CompteClient compteClientHistorique = serveurBanque.getBanque().getCompteClient(cnx.getNumeroCompteActuel());
+                    CompteClient compteClientHistorique = banque.getCompteClient(cnx.getNumeroCompteClient());
                     if(compteClientHistorique != null){
                         CompteBancaire compte = null;
                         for(CompteBancaire compteB : compteClientHistorique.getComptesBancaire()){
