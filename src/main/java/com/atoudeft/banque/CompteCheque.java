@@ -3,9 +3,7 @@ package com.atoudeft.banque;
 import java.lang.reflect.Type;
 
 public class CompteCheque extends CompteBancaire{
-    private String numero;
-    private TypeCompte type;
-    private double solde;
+
     /**
      * Crée un compte bancaire.
      *

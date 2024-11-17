@@ -4,9 +4,6 @@ public class CompteEpargne extends CompteBancaire{
     static final double frais = 2; //Frais de 2$
     static final double limiteMinimum = 1000; //Solde minimum sans frais
 
-    private String numero;
-    private TypeCompte type;
-    private double solde;
     private double interets; // Interets en pourcentage
 
     /**
