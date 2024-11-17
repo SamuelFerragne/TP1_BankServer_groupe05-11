@@ -1,4 +1,4 @@
-public class OperationRetrait{
+public class OperationRetrait extends Operation {
 
     public OperationRetrait(double montant){
         super(montant, "RETRAIT");

@@ -1,4 +1,4 @@
-public class OperationDepot {
+public class OperationDepot extends Operation {
 
     public OperationDepot(double montant){
         super(montant, "DEPOT");

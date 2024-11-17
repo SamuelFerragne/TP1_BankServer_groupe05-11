@@ -1,4 +1,4 @@
-public class OperationFacture {
+public class OperationFacture extends Operation {
     public String numFacture;
     public String descritpion;
 

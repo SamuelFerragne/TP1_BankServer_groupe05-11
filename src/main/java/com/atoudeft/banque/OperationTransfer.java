@@ -1,4 +1,4 @@
-public class OperationTransfer {
+public class OperationTransfer extends Operation {
     public String numCompteDestinataire;
 
     public OperationTransfer(double montant, String numCompte){
