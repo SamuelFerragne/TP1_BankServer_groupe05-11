@@ -3,6 +3,7 @@ package com.atoudeft.banque;
 import java.io.Serializable;
 
 public abstract class CompteBancaire implements Serializable {
+    private PileChainee<Operation> historique;
     protected String numero;
     protected TypeCompte type;
     protected double solde;
@@ -33,7 +34,10 @@ public abstract class CompteBancaire implements Serializable {
         this.numero = numero;
         this.type = type;
         this.solde = 0;
+        this.historique = new PileChainee<>();
     }
+
+    public void ajouterOperation(Operation operation){historique.empiler(operation);}
     public String getNumero() {
         return numero;
     }
@@ -43,6 +47,7 @@ public abstract class CompteBancaire implements Serializable {
     public double getSolde() {
         return solde;
     }
+    public PileChainee<Operation> getHistorique(){ return historique; }
     public abstract boolean crediter(double montant);
     public abstract boolean debiter(double montant);
     public abstract boolean payerFacture(String numeroFacture, double montant, String description);
