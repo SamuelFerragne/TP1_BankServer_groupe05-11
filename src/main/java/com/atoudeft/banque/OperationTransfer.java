@@ -6,4 +6,9 @@ public class OperationTransfer {
         this. numCompteDestinataire = numCompte;
     }
 
+    @Override
+    public String toString(){
+        return date + "\t" + typeOperation + "\t" + montant + "\t" + numCompteDestinataire;
+    }
+
 }

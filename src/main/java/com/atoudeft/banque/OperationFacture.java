@@ -7,4 +7,8 @@ public class OperationFacture {
         this.numFacture = numFacture;
         this.descritpion = descritpion;
     }
+
+    public String toString(){
+        return date + "\t" + typeOperation + "\t" + montant + "\t" + numFacture + "\t" + descritpion;
+    }
 }
