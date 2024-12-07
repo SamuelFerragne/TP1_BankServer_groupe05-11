@@ -90,7 +90,9 @@ public class GestionnaireEvenementClient2 implements GestionnaireEvenement {
                     break;
                 case "SELECT" :
                     arg = evenement.getArgument();
-                    JOptionPane.showMessageDialog(panneauPrincipal,"SELECT "+arg);
+                    System.out.println();
+                    //JOptionPane.showMessageDialog(panneauPrincipal,"SELECT "+arg);
+                    panneauPrincipal.getPanneauOperationsCompte().getLblSolde().setText("Solde: "+arg.substring(10).trim());
                     break;
 
                 /******************* OPÉRATIONS BANCAIRES *******************/
@@ -112,6 +114,7 @@ public class GestionnaireEvenementClient2 implements GestionnaireEvenement {
                     break;
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
                 default:
+                    //System.out.println("je suis dans le default");
                     System.out.println("RECU : "+evenement.getType()+" "+evenement.getArgument());
             }
         }
