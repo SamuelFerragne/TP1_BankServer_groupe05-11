@@ -35,6 +35,7 @@ public class PanneauPrincipal  extends JPanel {
         panneauConnexion.setEcouteur(new EcouteurConnexion(client,panneauConnexion));
 
         panneauOperationsCompte = new PanneauOperationsCompte();
+        panneauOperationsCompte.setEcouteur(new EcouteurOperationsCompte(client));
 
         panneauCompteClient = new JPanel();
 
