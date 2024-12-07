@@ -42,4 +42,7 @@ public class PanneauOperationsCompte extends JPanel {
         bFacture.addActionListener(ecouteur);
         bHistorique.addActionListener(ecouteur);
     }
+
+    //pour changer mettre à jour le lbl après le select
+    public JLabel getLblSolde(){return lblSolde;}
 }

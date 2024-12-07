@@ -14,7 +14,13 @@ public class EcouteurOperationsCompte implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //à compléter :
+        String command = e.getActionCommand();
+
+        switch (command){
+            case "EPARGNE":
+                client.envoyer(command);
+                break;
+        }
 
     }
 }

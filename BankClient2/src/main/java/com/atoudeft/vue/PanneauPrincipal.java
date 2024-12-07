@@ -35,6 +35,7 @@ public class PanneauPrincipal  extends JPanel {
         panneauConnexion.setEcouteur(new EcouteurConnexion(client,panneauConnexion));
 
         panneauOperationsCompte = new PanneauOperationsCompte();
+        panneauOperationsCompte.setEcouteur(new EcouteurOperationsCompte(client));
 
         panneauCompteClient = new JPanel();
 
@@ -90,5 +91,10 @@ public class PanneauPrincipal  extends JPanel {
      */
     public void ajouterCompte(String str) {
         numerosComptes.addElement(str);
+    }
+
+    //get utilisé pour mettre à jour le label de solde après le select
+    public PanneauOperationsCompte getPanneauOperationsCompte() {
+        return panneauOperationsCompte;
     }
 }

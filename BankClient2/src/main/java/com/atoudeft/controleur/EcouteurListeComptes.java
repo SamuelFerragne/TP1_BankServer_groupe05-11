@@ -21,6 +21,16 @@ public class EcouteurListeComptes extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent evt) {
-        //à compléter
+        if(evt.getClickCount() == 2){
+            JList source = (JList) evt.getSource();
+            String compteSelect = (String) source.getSelectedValue();
+
+            if(compteSelect != null){
+                String typeCompte = compteSelect.substring(7,compteSelect.length()-1);
+                //System.out.println(typeCompte);
+                client.envoyer("SELECT "+typeCompte.toLowerCase());
+            }
+
+        }
     }
 }

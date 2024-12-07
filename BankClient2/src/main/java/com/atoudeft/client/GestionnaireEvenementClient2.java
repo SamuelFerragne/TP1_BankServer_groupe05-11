@@ -82,11 +82,17 @@ public class GestionnaireEvenementClient2 implements GestionnaireEvenement {
                 /******************* SÉLECTION DE COMPTES *******************/
                 case "EPARGNE" :
                     arg = evenement.getArgument();
-                    JOptionPane.showMessageDialog(panneauPrincipal,"EPARGNE "+arg);
+                    if(arg.startsWith("OK")){
+                        panneauPrincipal.ajouterCompte(arg.substring(2).trim()+"[EPARGNE]");
+                    }else{
+                        JOptionPane.showMessageDialog(panneauPrincipal, "probleme lors de la creation", "EPARGNE "+arg,JOptionPane.ERROR_MESSAGE);
+                    }
                     break;
                 case "SELECT" :
                     arg = evenement.getArgument();
-                    JOptionPane.showMessageDialog(panneauPrincipal,"SELECT "+arg);
+                    System.out.println();
+                    //JOptionPane.showMessageDialog(panneauPrincipal,"SELECT "+arg);
+                    panneauPrincipal.getPanneauOperationsCompte().getLblSolde().setText("Solde: "+arg.substring(10).trim());
                     break;
 
                 /******************* OPÉRATIONS BANCAIRES *******************/
@@ -108,6 +114,7 @@ public class GestionnaireEvenementClient2 implements GestionnaireEvenement {
                     break;
                 /******************* TRAITEMENT PAR DÉFAUT *******************/
                 default:
+                    //System.out.println("je suis dans le default");
                     System.out.println("RECU : "+evenement.getType()+" "+evenement.getArgument());
             }
         }
