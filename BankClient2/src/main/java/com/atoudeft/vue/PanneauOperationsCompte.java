@@ -17,14 +17,14 @@ public class PanneauOperationsCompte extends JPanel {
         bHistorique = new JButton("Historique du compte");
         lblSolde = new JLabel("Solde : ");
 
-        bEpargne.setActionCommand("DEPOT");
+        bEpargne.setActionCommand("EPARGNE");
         bDepot.setActionCommand("DEPOT");
         bRetrait.setActionCommand("RETRAIT");
         bTransfert.setActionCommand("TRANSFER");
         bFacture.setActionCommand("FACTURE");
         bHistorique.setActionCommand("HIST");
 
-        //à compléter :
+
         this.setLayout(new FlowLayout(FlowLayout.RIGHT));
         this.add(lblSolde);
         this.add(bEpargne);

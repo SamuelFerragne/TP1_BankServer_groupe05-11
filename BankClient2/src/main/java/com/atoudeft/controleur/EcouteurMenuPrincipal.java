@@ -1,6 +1,7 @@
 package com.atoudeft.controleur;
 
 import com.atoudeft.client.Client;
+import com.atoudeft.vue.PanneauConfigServeur;
 
 import javax.swing.*;
 import java.awt.*;
