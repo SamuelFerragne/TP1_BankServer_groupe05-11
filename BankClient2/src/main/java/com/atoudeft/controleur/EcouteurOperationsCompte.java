@@ -21,6 +21,7 @@ public class EcouteurOperationsCompte implements ActionListener {
         int confirmation;
 
         switch (command){
+            case "HIST":
             case "EPARGNE":
                 client.envoyer(command);
                 break;
@@ -56,6 +57,7 @@ public class EcouteurOperationsCompte implements ActionListener {
                     client.envoyer(command + " " + panneauFacture.getMontantFacture() + " " + panneauFacture.getNumeroFacture() + " " + panneauFacture.getDescription());
                 }
                 break;
+
 
         }
 
