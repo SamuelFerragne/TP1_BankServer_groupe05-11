@@ -3,13 +3,10 @@ package com.atoudeft.vue;
 import com.atoudeft.client.Client;
 import com.atoudeft.controleur.EcouteurConnexion;
 import com.atoudeft.controleur.EcouteurListeComptes;
+import com.atoudeft.controleur.EcouteurOperationsCompte;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Vector;
 
 /**
  *
@@ -22,6 +19,8 @@ public class PanneauPrincipal  extends JPanel {
     private PanneauConnexion panneauConnexion;
     private JPanel panneauCompteClient;
     private PanneauOperationsCompte panneauOperationsCompte;
+    private PanneauDepot panneauDepot;
+    private EcouteurOperationsCompte ecouteurOperationsCompte;
 
     private DefaultListModel<String> numerosComptes;
     private JList<String> jlNumerosComptes;
@@ -30,12 +29,13 @@ public class PanneauPrincipal  extends JPanel {
 
     public PanneauPrincipal(Client client) {
         this.client = client;
+        ecouteurOperationsCompte = new EcouteurOperationsCompte(client);
 
         panneauConnexion = new PanneauConnexion();
         panneauConnexion.setEcouteur(new EcouteurConnexion(client,panneauConnexion));
 
         panneauOperationsCompte = new PanneauOperationsCompte();
-        panneauOperationsCompte.setEcouteur(new EcouteurOperationsCompte(client));
+        panneauOperationsCompte.setEcouteur(ecouteurOperationsCompte);
 
         panneauCompteClient = new JPanel();
 
@@ -84,7 +84,8 @@ public class PanneauPrincipal  extends JPanel {
     public void montrerPanneauCompteClient() {
         panneauCompteClient.setVisible(true);
     }
-    /**
+
+   /**
      * Affiche un numéro de compte dans le JList des comptes.
      *
      * @param str chaine contenant le numéros de compte

@@ -3,6 +3,7 @@ package com.atoudeft.client;
 import com.atoudeft.commun.evenement.Evenement;
 import com.atoudeft.commun.evenement.GestionnaireEvenement;
 import com.atoudeft.commun.net.Connexion;
+import com.atoudeft.vue.PanneauHistorique;
 import com.atoudeft.vue.PanneauPrincipal;
 import com.programmes.MainFrame;
 
@@ -40,13 +41,13 @@ public class GestionnaireEvenementClient2 implements GestionnaireEvenement {
                 case "END": //Le serveur demande de fermer la connexion
                     client.deconnecter(); //On ferme la connexion
                     break;
-                /******************* CREATION et CONNEXION *******************/
-//                case "HIST": //Le serveur a renvoyé
-//                    panneauPrincipal.setVisible(true);
-//                    JOptionPane.showMessageDialog(null,"Panneau visible");
-//                    cnx.envoyer("LIST");
-//                    arg = evenement.getArgument();
-//                    break;
+                    /******************* CREATION et CONNEXION *******************/
+                case "HIST": //Le serveur a renvoyé
+                    panneauPrincipal.setVisible(true);
+                    arg = evenement.getArgument();
+                    PanneauHistorique panneauHistorique = new PanneauHistorique(arg);
+                    JOptionPane.showMessageDialog(null,panneauHistorique, "Historique", JOptionPane.PLAIN_MESSAGE);
+                    break;
                 case "OK":
                     panneauPrincipal.setVisible(true);
                     fenetre = (MainFrame)panneauPrincipal.getTopLevelAncestor();
